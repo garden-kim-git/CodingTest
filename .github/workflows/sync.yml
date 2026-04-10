@@ -1,0 +1,28 @@
+name: Sync to algolog
+on:
+  push:
+    branches:
+      - main
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 개인 레포 체크아웃
+        uses: actions/checkout@v3
+      - name: 스터디 레포 체크아웃
+        uses: actions/checkout@v3
+        with:
+          repository: Minji6/algolog
+          token: ${{ secrets.CodingStudy }}
+          path: shared-repo
+      - name: 파일 복사
+        run: |
+          rsync -av --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='shared-repo' ./ shared-repo/{본인이름}/
+      - name: 스터디 레포에 push
+        run: |
+          cd shared-repo
+          git config user.name "garden-kim"
+          git config user.email "garden-kim@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "sync: $(git -C $GITHUB_WORKSPACE log --format=%s -1 HEAD)"
+          git push
