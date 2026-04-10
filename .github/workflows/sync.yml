@@ -17,7 +17,7 @@ jobs:
           path: shared-repo
       - name: 파일 복사
         run: |
-          rsync -av --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='shared-repo' ./ shared-repo/{본인이름}/
+          rsync -av --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='shared-repo' ./ shared-repo/정원/
       - name: 스터디 레포에 push
         run: |
           cd shared-repo
